@@ -362,6 +362,8 @@
 		Cat.reset();
 		Scores.reset();
 		GoalKeepers.reset();
+		$("#awesome-background-music")[0].pause();
+		$("#awesome-background-music")[0].currentTime = 0;
 	});
 
 	$(".player-got-it").on("click",function(){
@@ -384,7 +386,7 @@
 			return this.getGoalKeeperNode().position().top;
 		},
 		getMySpeed: function(){
-			return Math.abs(speedY * this.level * 0.5);
+			return Math.abs(speedY * this.level * 0.7);
 		},
 		getGoalKeeperNode: function(){
 			return $("." + this.goalkeeperClass.toLowerCase() + "-goalkeeper");
@@ -487,6 +489,27 @@
 
 			var rainbow = document.createElement("div");
 			var height = 40;
+
+			var currLeft = $(".left-goalkeeper").position().top;
+			var currRight = $(".right-goalkeeper").position().top;
+
+			// the faster the cat moves, the faster the goalkeepers should be allowed to move right?
+			var speed = Math.abs(speedY);
+
+			if(pressedKeys[keys.w]){
+				GoalKeepers.updateLeft(currLeft - speed);
+			}
+			if(pressedKeys[keys.s]){
+				GoalKeepers.updateLeft(currLeft + speed);
+			}
+			if(!singlePlayer){
+				if(pressedKeys[keys.up]){
+					GoalKeepers.updateRight(currRight - speed);
+				}
+				if(pressedKeys[keys.down]){
+					GoalKeepers.updateRight(currRight + speed);
+				}
+			}
 
 			if(Cat.createRainbow){
 				$(rainbow).css({
@@ -748,23 +771,6 @@
 		var currLeft = $(".left-goalkeeper").position().top;
 		var currRight = $(".right-goalkeeper").position().top;
 
-		// the faster the cat moves, the faster the goalkeepers should be allowed to move right?
-		var speed = Math.abs(speedY) * 3;
-
-		if(pressedKeys[keys.w]){
-			GoalKeepers.updateLeft(currLeft - speed);
-		}
-		if(pressedKeys[keys.s]){
-			GoalKeepers.updateLeft(currLeft + speed);
-		}
-		if(!singlePlayer){
-			if(pressedKeys[keys.up]){
-				GoalKeepers.updateRight(currRight - speed);
-			}
-			if(pressedKeys[keys.down]){
-				GoalKeepers.updateRight(currRight + speed);
-			}
-		}
 		if(pressedKeys[keys.space]){
 			var catPos = $(".cat").position();
 			var top = catPos.top;
