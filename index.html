@@ -332,6 +332,12 @@
 
 	var singlePlayer = null;
 
+	if(Math.sign == undefined){
+		Math.sign = function(value){
+			return value == 0 ? 0 : (value < 0 ? -1 : 1);
+		}
+	}
+
 	$(".player-button").on("click",function(){
 		var button = $(this);
 		var html = button.html();
